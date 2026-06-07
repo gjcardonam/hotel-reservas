@@ -1,0 +1,21 @@
+# Blueprint de Render. En el panel de Render: New + → Blueprint → conectar este repo.
+# Render detecta este archivo y crea el servicio web automáticamente.
+services:
+  - type: web
+    name: hotel-aurora
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Base de datos Postgres compartida (la misma que Vercel).
+      # Pega aquí la DATABASE_URL en el panel de Render (no se versiona).
+      - key: DATABASE_URL
+        sync: false
+      # Secreto para firmar la cookie de sesión (Render lo genera solo).
+      - key: SESSION_SECRET
+        generateValue: true

@@ -33,7 +33,7 @@ check-out**.
 | Framework | **Next.js 15** (App Router) + React 19 + TypeScript |
 | Estilos | **Tailwind CSS** + diseño propio (paleta "hotel elegante") |
 | Iconos | lucide-react |
-| Base de datos | **SQLite** + **Prisma ORM** |
+| Base de datos | **PostgreSQL** + **Prisma ORM** |
 | Lógica de servidor | **Server Actions** (sin API REST manual) |
 | Auth | Sesión por cookie firmada (HMAC) + scrypt |
 
@@ -94,9 +94,29 @@ Contraseña:  aurora2026
 
 ## ☁️ Despliegue
 
-El proyecto usa SQLite por defecto para facilitar la ejecución local. Para desplegar en
-**Vercel**, cambia el `provider` de `prisma/schema.prisma` a `postgresql` y usa una base
-de datos Postgres (p. ej. Neon), configurando `DATABASE_URL` en las variables de entorno.
+La aplicación usa **PostgreSQL** y está desplegada en **Vercel** y en **Render**, ambas
+apuntando a la misma base de datos Postgres.
+
+### Variables de entorno (en ambas plataformas)
+| Variable | Descripción |
+|----------|-------------|
+| `DATABASE_URL` | Cadena de conexión Postgres (Neon u otra) |
+| `SESSION_SECRET` | Secreto aleatorio para firmar la cookie de sesión |
+
+### Vercel
+1. Importar el repo en Vercel (framework Next.js, autodetectado).
+2. Definir `DATABASE_URL` y `SESSION_SECRET` en *Environment Variables*.
+3. Deploy. El `build` ejecuta `prisma generate && next build`.
+
+### Render
+1. *New +* → *Blueprint* → conectar este repo (Render lee `render.yaml`).
+2. Pegar la `DATABASE_URL` (la misma que Vercel). `SESSION_SECRET` se genera solo.
+3. Deploy.
+
+### Preparar la base de datos (una sola vez)
+```bash
+DATABASE_URL="postgresql://..." npm run setup   # crea tablas + datos de ejemplo
+```
 
 ---
 
