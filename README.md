@@ -122,6 +122,19 @@ DATABASE_URL="postgresql://..." npm run setup   # crea tablas + datos de ejemplo
 
 ---
 
+## 📚 Documentación de diseño
+
+Artefactos que muestran la planeación y las decisiones de construcción:
+
+| Documento | Contenido |
+|-----------|-----------|
+| [`docs/PLANEACION.md`](docs/PLANEACION.md) | Visión, alcance, requisitos, historias de usuario (MoSCoW), sprints |
+| [`docs/MODELO_DATOS.md`](docs/MODELO_DATOS.md) | Diagrama ER + justificación maestros/transaccionales |
+| [`docs/DECISIONES.md`](docs/DECISIONES.md) | Registro de decisiones técnicas (ADR) con alternativas y porqué |
+| [`docs/DIAGRAMAS.md`](docs/DIAGRAMAS.md) | Flujo de reserva, máquina de estados, arquitectura, matriz de roles |
+| [`ARQUITECTURA.md`](ARQUITECTURA.md) | Explicación técnica del código |
+| [`GUION_SUSTENTACION.md`](GUION_SUSTENTACION.md) | Guion de demo + banco de preguntas |
+
 ## 👥 Equipo
 
 Proyecto académico — Ingeniería Web 2026-1, Universidad de Antioquia.
