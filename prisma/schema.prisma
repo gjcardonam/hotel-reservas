@@ -1,0 +1,62 @@
+// Hotel Aurora — esquema de datos
+// Datos maestros: Habitacion, Cliente.  Datos transaccionales: Reserva (con check-in/check-out).
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  nombre       String
+  passwordHash String
+  rol          String   @default("PERSONAL") // PERSONAL | ADMIN
+  createdAt    DateTime @default(now())
+}
+
+model Cliente {
+  id        String    @id @default(cuid())
+  nombre    String
+  email     String    @unique
+  telefono  String
+  documento String
+  pais      String    @default("Colombia")
+  createdAt DateTime  @default(now())
+  reservas  Reserva[]
+}
+
+model Habitacion {
+  id          String    @id @default(cuid())
+  numero      String    @unique
+  tipo        String // INDIVIDUAL | DOBLE | SUITE | DELUXE
+  descripcion String
+  precioNoche Int
+  capacidad   Int
+  estado      String    @default("DISPONIBLE") // DISPONIBLE | OCUPADA | MANTENIMIENTO
+  fotoUrl     String
+  servicios   String // CSV: "WiFi,TV,Minibar"
+  createdAt   DateTime  @default(now())
+  reservas    Reserva[]
+}
+
+model Reserva {
+  id           String     @id @default(cuid())
+  codigo       String     @unique
+  cliente      Cliente    @relation(fields: [clienteId], references: [id])
+  clienteId    String
+  habitacion   Habitacion @relation(fields: [habitacionId], references: [id])
+  habitacionId String
+  fechaEntrada DateTime
+  fechaSalida  DateTime
+  huespedes    Int        @default(1)
+  noches       Int
+  total        Int
+  estado       String     @default("CONFIRMADA") // CONFIRMADA | EN_CURSO | FINALIZADA | CANCELADA
+  createdAt    DateTime   @default(now())
+  checkInAt    DateTime?
+  checkOutAt   DateTime?
+}

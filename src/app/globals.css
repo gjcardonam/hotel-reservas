@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 250 248 244;
+  --foreground: 13 20 38;
+}
+
+@layer base {
+  * {
+    @apply border-night-200;
+  }
+  body {
+    @apply bg-sand-50 text-night-900 font-sans antialiased;
+    background-image: radial-gradient(
+        1200px 600px at 85% -10%,
+        rgba(200, 144, 47, 0.06),
+        transparent
+      ),
+      radial-gradient(900px 500px at -10% 0%, rgba(31, 43, 74, 0.05), transparent);
+    background-attachment: fixed;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-serif tracking-tight;
+  }
+}
+
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8;
+  }
+  .card {
+    @apply rounded-2xl border border-night-100 bg-white shadow-soft;
+  }
+  .skeleton {
+    @apply relative overflow-hidden rounded-md bg-night-100;
+  }
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0 -translate-x-full;
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.55),
+      transparent
+    );
+    animation: shimmer 1.6s infinite;
+  }
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  .input-base {
+    @apply w-full rounded-xl border border-night-200 bg-white px-4 py-2.5 text-sm text-night-900 shadow-sm outline-none transition placeholder:text-night-300 focus:border-night-400 focus:ring-4 focus:ring-night-100;
+  }
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-night-200;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-night-300;
+}
