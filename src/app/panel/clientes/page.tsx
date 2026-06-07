@@ -3,15 +3,20 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { Badge } from "@/components/ui/badge";
 import { ClienteForm } from "@/components/panel/cliente-form";
 import { db } from "@/lib/db";
+import { getUsuarioActual } from "@/lib/auth";
 import { eliminarClienteAction } from "@/app/actions/clientes";
 
 export const dynamic = "force-dynamic";
 
 export default async function PanelClientesPage() {
-  const clientes = await db.cliente.findMany({
-    orderBy: { nombre: "asc" },
-    include: { _count: { select: { reservas: true } } },
-  });
+  const [clientes, usuario] = await Promise.all([
+    db.cliente.findMany({
+      orderBy: { nombre: "asc" },
+      include: { _count: { select: { reservas: true } } },
+    }),
+    getUsuarioActual(),
+  ]);
+  const esAdmin = usuario?.rol === "ADMIN";
 
   return (
     <div className="space-y-6">
@@ -70,18 +75,20 @@ export default async function PanelClientesPage() {
 
               <div className="flex justify-start gap-1 md:justify-end">
                 <ClienteForm cliente={c} />
-                <form action={eliminarClienteAction}>
-                  <input type="hidden" name="id" value={c.id} />
-                  <SubmitButton
-                    size="sm"
-                    variant="ghost"
-                    className="h-9 w-9 p-0 text-rose-500 hover:bg-rose-50"
-                    confirm="¿Eliminar este cliente? (No se permite si tiene reservas)."
-                    pendingText=""
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </SubmitButton>
-                </form>
+                {esAdmin && (
+                  <form action={eliminarClienteAction}>
+                    <input type="hidden" name="id" value={c.id} />
+                    <SubmitButton
+                      size="sm"
+                      variant="ghost"
+                      className="h-9 w-9 p-0 text-rose-500 hover:bg-rose-50"
+                      confirm="¿Eliminar este cliente? (No se permite si tiene reservas)."
+                      pendingText=""
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </SubmitButton>
+                  </form>
+                )}
               </div>
             </li>
           ))}

@@ -21,8 +21,9 @@ const links = [
   { href: "/panel/clientes", label: "Clientes", icon: Users },
 ];
 
-export function Sidebar({ nombre }: { nombre: string }) {
+export function Sidebar({ nombre, rol }: { nombre: string; rol: string }) {
   const pathname = usePathname();
+  const rolLabel = rol === "ADMIN" ? "Administrador" : "Recepción";
 
   return (
     <aside className="flex h-full flex-col gap-6 p-5">
@@ -85,7 +86,7 @@ export function Sidebar({ nombre }: { nombre: string }) {
           </span>
           <div className="leading-tight">
             <p className="text-sm font-medium text-white">{nombre}</p>
-            <p className="text-xs text-night-400">Conectado</p>
+            <p className="text-xs text-gold-300">{rolLabel}</p>
           </div>
         </div>
       </div>

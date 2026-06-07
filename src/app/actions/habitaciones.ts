@@ -2,8 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { getUsuarioActual } from "@/lib/auth";
 
 export type CrudState = { ok?: boolean; error?: string };
+
+async function esAdmin(): Promise<boolean> {
+  const u = await getUsuarioActual();
+  return u?.rol === "ADMIN";
+}
 
 function leerHabitacion(formData: FormData) {
   return {
@@ -33,6 +39,8 @@ export async function crearHabitacionAction(
   _prev: CrudState,
   formData: FormData
 ): Promise<CrudState> {
+  if (!(await esAdmin()))
+    return { error: "Solo un administrador puede crear habitaciones." };
   const data = leerHabitacion(formData);
   const error = validar(data);
   if (error) return { error };
@@ -72,6 +80,7 @@ export async function actualizarHabitacionAction(
 }
 
 export async function eliminarHabitacionAction(formData: FormData) {
+  if (!(await esAdmin())) return; // solo administración
   const id = String(formData.get("id") ?? "");
   const reservasActivas = await db.reserva.count({
     where: { habitacionId: id, estado: { in: ["CONFIRMADA", "EN_CURSO"] } },

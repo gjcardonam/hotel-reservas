@@ -65,9 +65,11 @@ export default async function LoginPage() {
           <div className="mt-8 rounded-xl border border-night-100 bg-white p-4 text-sm">
             <p className="font-medium text-night-700">Credenciales de demostración</p>
             <p className="mt-1 text-night-500">
-              Correo: <code className="text-night-800">personal@aurora.com</code>
+              Recepción: <code className="text-night-800">personal@aurora.com</code>
               <br />
-              Contraseña: <code className="text-night-800">aurora2026</code>
+              Administrador: <code className="text-night-800">admin@aurora.com</code>
+              <br />
+              Contraseña (ambos): <code className="text-night-800">aurora2026</code>
             </p>
           </div>
         </div>

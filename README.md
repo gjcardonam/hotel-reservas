@@ -60,10 +60,12 @@ npm run dev
 Abre <http://localhost:3000>.
 
 ### 👤 Credenciales de demostración (panel)
-```
-Correo:      personal@aurora.com
-Contraseña:  aurora2026
-```
+Dos roles con permisos distintos (contraseña `aurora2026` para ambos):
+
+| Rol | Correo | Permisos |
+|-----|--------|----------|
+| **Administrador** | `admin@aurora.com` | Todo: incluye crear/eliminar habitaciones y eliminar clientes |
+| **Recepción** | `personal@aurora.com` | Operación diaria: reservas, check-in/out, registrar/editar clientes y cambiar estado de habitaciones |
 
 ### Scripts útiles
 | Comando | Acción |

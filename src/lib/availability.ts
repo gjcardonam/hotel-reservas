@@ -4,15 +4,12 @@ import { db } from "@/lib/db";
 const ESTADOS_BLOQUEANTES = ["CONFIRMADA", "EN_CURSO"];
 
 /**
- * Dos rangos [a1,a2) y [b1,b2) se solapan si  a1 < b2  &&  b1 < a2.
+ * Regla de solape: dos rangos [a1,a2) y [b1,b2) chocan si  a1 < b2  &&  b1 < a2.
  * Una salida que coincide con la entrada de otra reserva NO se solapa
  * (el huésped sale en la mañana, el siguiente entra en la tarde).
+ *
+ * ¿La habitación tiene alguna reserva activa que choque con el rango pedido?
  */
-export function rangosSeSolapan(a1: Date, a2: Date, b1: Date, b2: Date): boolean {
-  return a1 < b2 && b1 < a2;
-}
-
-/** ¿La habitación tiene alguna reserva activa que choque con el rango pedido? */
 export async function habitacionDisponible(
   habitacionId: string,
   entrada: Date,

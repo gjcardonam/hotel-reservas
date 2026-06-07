@@ -1,8 +1,6 @@
 export const TIPOS_HABITACION = ["INDIVIDUAL", "DOBLE", "SUITE", "DELUXE"] as const;
-export type TipoHabitacion = (typeof TIPOS_HABITACION)[number];
 
 export const ESTADOS_HABITACION = ["DISPONIBLE", "OCUPADA", "MANTENIMIENTO"] as const;
-export type EstadoHabitacion = (typeof ESTADOS_HABITACION)[number];
 
 export const ESTADOS_RESERVA = [
   "CONFIRMADA",
@@ -10,7 +8,6 @@ export const ESTADOS_RESERVA = [
   "FINALIZADA",
   "CANCELADA",
 ] as const;
-export type EstadoReserva = (typeof ESTADOS_RESERVA)[number];
 
 export const TIPO_LABEL: Record<string, string> = {
   INDIVIDUAL: "Individual",
@@ -31,16 +28,3 @@ export const ESTADO_RES_LABEL: Record<string, string> = {
   FINALIZADA: "Finalizada",
   CANCELADA: "Cancelada",
 };
-
-export const SERVICIOS_DISPONIBLES = [
-  "WiFi",
-  "TV",
-  "Minibar",
-  "Aire acondicionado",
-  "Caja fuerte",
-  "Jacuzzi",
-  "Balcón",
-  "Vista al mar",
-  "Escritorio",
-  "Cafetera",
-] as const;

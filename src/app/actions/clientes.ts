@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { getUsuarioActual } from "@/lib/auth";
 import type { CrudState } from "./habitaciones";
 
 function leerCliente(formData: FormData) {
@@ -56,6 +57,8 @@ export async function actualizarClienteAction(
 }
 
 export async function eliminarClienteAction(formData: FormData) {
+  const u = await getUsuarioActual();
+  if (u?.rol !== "ADMIN") return; // solo administración
   const id = String(formData.get("id") ?? "");
   const reservas = await db.reserva.count({ where: { clienteId: id } });
   if (reservas > 0) return; // protegido: tiene historial de reservas

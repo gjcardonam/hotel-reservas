@@ -41,14 +41,6 @@ export function formatFechaLarga(date: Date | string): string {
   }).format(d);
 }
 
-/** YYYY-MM-DD para inputs date, en zona local. */
-export function toDateInput(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
-
 export function generarCodigo(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let s = "";

@@ -1,8 +1,9 @@
-import { Trash2, Users, Wrench, CheckCircle2 } from "lucide-react";
+import { Trash2, Users, Wrench, CheckCircle2, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { HabitacionForm } from "@/components/panel/habitacion-form";
 import { db } from "@/lib/db";
+import { getUsuarioActual } from "@/lib/auth";
 import {
   eliminarHabitacionAction,
   cambiarEstadoHabitacionAction,
@@ -13,10 +14,14 @@ import { formatCOP } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export default async function PanelHabitacionesPage() {
-  const habitaciones = await db.habitacion.findMany({
-    orderBy: { numero: "asc" },
-    include: { _count: { select: { reservas: true } } },
-  });
+  const [habitaciones, usuario] = await Promise.all([
+    db.habitacion.findMany({
+      orderBy: { numero: "asc" },
+      include: { _count: { select: { reservas: true } } },
+    }),
+    getUsuarioActual(),
+  ]);
+  const esAdmin = usuario?.rol === "ADMIN";
 
   return (
     <div className="space-y-6">
@@ -27,7 +32,13 @@ export default async function PanelHabitacionesPage() {
             {habitaciones.length} habitaciones · datos maestros del hotel.
           </p>
         </div>
-        <HabitacionForm />
+        {esAdmin ? (
+          <HabitacionForm />
+        ) : (
+          <span className="inline-flex items-center gap-1.5 rounded-xl bg-night-100 px-3 py-2 text-xs font-medium text-night-500">
+            <ShieldCheck className="h-4 w-4" /> Crear/eliminar: solo administración
+          </span>
+        )}
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
@@ -56,18 +67,20 @@ export default async function PanelHabitacionesPage() {
                 </div>
                 <div className="flex items-center">
                   <HabitacionForm habitacion={h} />
-                  <form action={eliminarHabitacionAction}>
-                    <input type="hidden" name="id" value={h.id} />
-                    <SubmitButton
-                      size="sm"
-                      variant="ghost"
-                      className="h-9 w-9 p-0 text-rose-500 hover:bg-rose-50"
-                      confirm="¿Eliminar esta habitación? Se borrarán sus reservas asociadas. (No se permite si tiene reservas activas.)"
-                      pendingText=""
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </SubmitButton>
-                  </form>
+                  {esAdmin && (
+                    <form action={eliminarHabitacionAction}>
+                      <input type="hidden" name="id" value={h.id} />
+                      <SubmitButton
+                        size="sm"
+                        variant="ghost"
+                        className="h-9 w-9 p-0 text-rose-500 hover:bg-rose-50"
+                        confirm="¿Eliminar esta habitación? Se borrarán sus reservas asociadas. (No se permite si tiene reservas activas.)"
+                        pendingText=""
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </SubmitButton>
+                    </form>
+                  )}
                 </div>
               </div>
 

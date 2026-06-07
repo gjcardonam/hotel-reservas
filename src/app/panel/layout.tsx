@@ -15,7 +15,7 @@ export default async function PanelLayout({
   return (
     <div className="flex min-h-screen bg-sand-50">
       <div className="sticky top-0 hidden h-screen w-64 shrink-0 bg-night-950 lg:block">
-        <Sidebar nombre={usuario.nombre} />
+        <Sidebar nombre={usuario.nombre} rol={usuario.rol} />
       </div>
       <main className="min-w-0 flex-1">
         {/* Topbar móvil */}
